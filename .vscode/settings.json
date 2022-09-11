@@ -11,7 +11,7 @@
     "**/*.pyc": true,
     "**/__pycache__": true
   },
-  "python.formatting.blackArgs": ["--line-length", "100"],
+  "python.formatting.blackArgs": ["--line-length", "89"],
   "python.formatting.provider": "black",
   "editor.formatOnSave": true
 }

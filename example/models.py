@@ -32,7 +32,9 @@ class Book(models.Model):
 class Grocery(models.Model):
     product_tag = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
-    category = models.ForeignKey(Category, related_name="grocery", on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, related_name="grocery", on_delete=models.CASCADE
+    )
     price = models.IntegerField()
     quantity = models.IntegerField()
     imageurl = models.URLField()
