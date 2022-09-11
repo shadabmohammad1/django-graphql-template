@@ -19,7 +19,7 @@ class CategoryType(DjangoObjectType):
         model = Category
         fields = ("id", "title")
 
-    def resolve_extra_data(self, info):
+    def resolve_extra_data(self):
         resp = requests.get("https://jsonplaceholder.typicode.com/todos/1")
         if resp.ok:
             return resp.json()
