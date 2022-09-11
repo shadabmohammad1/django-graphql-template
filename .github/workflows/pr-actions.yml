@@ -1,32 +1,18 @@
-name: autopep8
-on: pull_request
+name: PEP8
+on: [pull_request]
 jobs:
-  autopep8:
-    # Check if the PR is not raised by this workflow and is not from a fork
-    if: startsWith(github.head_ref, 'autopep8-patches') == false && github.event.pull_request.head.repo.full_name == github.repository
+  run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
+      - name: Setup Python 3.7
+        uses: actions/setup-python@master
         with:
-          ref: ${{ github.head_ref }}
-      - name: autopep8
-        id: autopep8
-        uses: peter-evans/autopep8@v1
-        with:
-          args: --exit-code --recursive --in-place --aggressive --aggressive .
-      - name: Set autopep8 branch name
-        id: vars
-        run: echo ::set-output name=branch-name::"autopep8-patches/${{ github.head_ref }}"
-      - name: Create Pull Request
-        if: steps.autopep8.outputs.exit-code == 2
-        uses: peter-evans/create-pull-request@v3
-        with:
-          commit-message: autopep8 action fixes
-          title: Fixes by autopep8 action
-          body: This is an auto-generated PR with fixes by autopep8.
-          labels: autopep8, automated pr
-          reviewers: peter-evans
-          branch: ${{ steps.vars.outputs.branch-name }}
-      - name: Fail if autopep8 made changes
-        if: steps.autopep8.outputs.exit-code == 2
-        run: exit 1
+          version: 3.7
+      - name: flake8
+        run: |
+          pip install flake8
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # The GitHub editor is 127 chars wide
+          flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
