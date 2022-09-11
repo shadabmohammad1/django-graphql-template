@@ -1,0 +1,17 @@
+{
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.envFile": "${workspaceFolder}/.base_env",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.pyc": true,
+    "**/__pycache__": true
+  },
+  "python.formatting.blackArgs": ["--line-length", "100"],
+  "python.formatting.provider": "black",
+  "editor.formatOnSave": true
+}
