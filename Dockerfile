@@ -1,29 +1,11 @@
-FROM alpine
+FROM python:alpine
 
-ENV PYTHONUNBUFFERED 1
-ENV user=bandit
+# So I know pinning versions is a best practice, but at this current moment in
+# time I really don't think this is a big enough problem to spend more time on
+# playing around with automation to pin versions in an intelligent way.
+# hadolint ignore=DL3013
+RUN pip3 install bandit
 
-# install python and bandit 
-RUN echo "**** install runtime packages ****"      && \
-    apk add --no-cache py2-pip python2 bash        && \
-    echo "**** install pip packages ****"          && \
-    pip install --no-cache-dir -U pip              && \
-    pip install --no-cache-dir -U bandit           && \
-    echo "**** create volumes ****"                && \
-    mkdir -p /src                                  && \
-    mkdir -p /report                               && \
-    mkdir -p /bandit                               && \
-    echo "**** user creation ****"                 && \
-    addgroup -S bandit                             && \
-    adduser -D -S -h /src -G bandit bandit         && \
-    chown -R bandit:bandit /src /report /bandit
+WORKDIR /code
 
-USER ${user}
-
-VOLUME ["/src" "/report"]
-
-WORKDIR /src
-
-COPY bandit /bandit
-
-CMD ["/.bandit/bandit.sh"]
+ENTRYPOINT ["bandit"]
